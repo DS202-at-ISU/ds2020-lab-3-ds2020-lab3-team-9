@@ -70,6 +70,48 @@ For each team member, copy this part of the report.
 
 Each team member picks one of the statements in the FiveThirtyEight [analysis](https://fivethirtyeight.com/features/avengers-death-comics-age-of-ultron/) and fact checks it based on the data. Use dplyr functionality whenever possible.
 
+### Analyn Seeman
+
+> Out of 173 listed Avengers, my analysis found that 69 had died at least one time after they joined the team. That’s about 40 percent of all people who have ever signed on to the team.
+
+### Include the code
+
+```{r}
+
+numAvengers <- nrow(av)
+# numAvengers
+
+# View(deaths)
+# maxdeaths <- deaths %>% 
+#   mutate(
+#     Time = parse_number(Time)
+#   ) %>% 
+#   group_by(URL, Died) %>% 
+#   summarise(
+#     total_death = max(Time)
+#   ) %>% 
+#   filter(Died != "")
+#   
+# maxdeaths %>% 
+#   ungroup() %>% 
+#   count(Died, total_death)
+# 
+# maxdeaths %>% 
+#   group_by(Died, total_death) %>% 
+#   tally()
+
+# Count the number of Avengers who died at least once
+# num_died <- deaths %>%
+#   filter(!is.na(Died) & Died > 0) %>%  # Filter for deaths (non-NA and positive values)
+#   distinct(URL) %>%  # Keep only unique Avengers
+#   count()  # Count the number of unique Avengers
+
+# num_died
+
+```
+
+### Include your answer
+
 ### FiveThirtyEight Statement
 
 > Quote the statement you are planning to fact-check.
