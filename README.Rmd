@@ -116,6 +116,45 @@ numAvengers <- nrow(av)
 
 > Quote the statement you are planning to fact-check.
 
+
+### Laura Arazan
+
+### Include the code
+```{r}
+av <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/avengers/avengers.csv", stringsAsFactors = FALSE)
+View(av)
+
+av %>% 
+  select(
+    Name.Alias,
+    starts_with("Death")
+  ) %>% 
+  head()
+
+deaths <- av %>% 
+  pivot_longer(
+    starts_with("Death"),
+    names_to = "Time",
+    values_to = "Died"
+  ) %>% 
+  select(
+    Name.Alias, Time, Died
+  )
+
+deaths %>% count(Deaths[YES])
+```
+
+### Include your answer
+
+- #
+
+### FiveThirtyEight Statement
+
+- "I counted 89 total deaths"
+
+
+### Jamey Nguyen
+
 ### Include the code
 
 Make sure to include the code to derive the (numeric) fact for the statement
@@ -125,3 +164,7 @@ Make sure to include the code to derive the (numeric) fact for the statement
 Include at least one sentence discussing the result of your fact-checking endeavor.
 
 Upload your changes to the repository. Discuss and refine answers as a team.
+
+### FiveThirtyEight Statement
+
+> Quote the statement you are planning to fact-check.
