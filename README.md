@@ -156,38 +156,72 @@ possible.
 ### Include the code
 
 ``` r
+# Get the total number of avengers
 numAvengers <- nrow(av)
-# numAvengers
-
-# View(deaths)
-# maxdeaths <- deaths %>% 
-#   mutate(
-#     Time = parse_number(Time)
-#   ) %>% 
-#   group_by(URL, Died) %>% 
-#   summarise(
-#     total_death = max(Time)
-#   ) %>% 
-#   filter(Died != "")
-#   
-# maxdeaths %>% 
-#   ungroup() %>% 
-#   count(Died, total_death)
-# 
-# maxdeaths %>% 
-#   group_by(Died, total_death) %>% 
-#   tally()
-
-# Count the number of Avengers who died at least once
-# num_died <- deaths %>%
-#   filter(!is.na(Died) & Died > 0) %>%  # Filter for deaths (non-NA and positive values)
-#   distinct(URL) %>%  # Keep only unique Avengers
-#   count()  # Count the number of unique Avengers
-
-# num_died
+numAvengers
 ```
 
+    ## [1] 173
+
+``` r
+av %>% 
+  select(
+    Name.Alias,
+    starts_with("Death")
+  ) %>% 
+  head()
+```
+
+    ##                    Name.Alias Death1 Death2 Death3 Death4 Death5
+    ## 1   Henry Jonathan "Hank" Pym    YES                            
+    ## 2              Janet van Dyne    YES                            
+    ## 3 Anthony Edward "Tony" Stark    YES                            
+    ## 4         Robert Bruce Banner    YES                            
+    ## 5                Thor Odinson    YES    YES                     
+    ## 6      Richard Milhouse Jones     NO
+
+``` r
+countDeaths <- av %>% 
+  pivot_longer(
+    starts_with("Death"),
+    names_to = "Time",
+    values_to = "Died"
+  ) %>% 
+  select(
+    Name.Alias, Time, Died
+  ) %>%
+  mutate(
+    Time = parse_number(Time)
+  )
+
+numDied <- countDeaths %>%
+  filter(!is.na(Died) & Died == "YES") %>%  
+  distinct(Name.Alias) %>%  
+  count()  
+
+# Number of Avengers who died at least once
+numDied
+```
+
+    ## # A tibble: 1 × 1
+    ##       n
+    ##   <int>
+    ## 1    64
+
+``` r
+deathPercentage = numDied / numAvengers
+deathPercentage
+```
+
+    ##           n
+    ## 1 0.3699422
+
 ### Include your answer
+
+The article was partially correct in their statement. There was 173
+listed Avengers, but there were only 64 avengers who died at least once.
+Since the number of deaths was wrong, the percentage was also wrong.
+Instead of being 40%, it should be ~37%.
 
 ### FiveThirtyEight Statement
 
