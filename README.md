@@ -1,4 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/orjN5TIA)
 
 <!-- README.md is generated from README.Rmd. Please edit the README.Rmd file -->
 
@@ -71,6 +70,68 @@ replaced by two columns: Time, and Death. Time should be a number
 between 1 and 5 (look into the function `parse_number`); Death is a
 categorical variables with values “yes”, “no” and ““. Call the resulting
 data set `deaths`.
+
+``` r
+library(tidyverse)
+```
+
+    ## Warning: package 'tidyverse' was built under R version 4.4.3
+
+    ## Warning: package 'tidyr' was built under R version 4.4.3
+
+    ## Warning: package 'readr' was built under R version 4.4.3
+
+    ## Warning: package 'forcats' was built under R version 4.4.3
+
+    ## Warning: package 'lubridate' was built under R version 4.4.3
+
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+    ## ✔ purrr     1.0.4     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
+library(dplyr)
+
+# View(av)
+
+av %>% 
+  select(
+    Name.Alias,
+    starts_with("Death")
+  ) %>% 
+  head()
+```
+
+    ##                    Name.Alias Death1 Death2 Death3 Death4 Death5
+    ## 1   Henry Jonathan "Hank" Pym    YES                            
+    ## 2              Janet van Dyne    YES                            
+    ## 3 Anthony Edward "Tony" Stark    YES                            
+    ## 4         Robert Bruce Banner    YES                            
+    ## 5                Thor Odinson    YES    YES                     
+    ## 6      Richard Milhouse Jones     NO
+
+``` r
+deaths <- av %>% 
+  pivot_longer(
+    starts_with("Death"),
+    names_to = "Time",
+    values_to = "Died"
+  ) %>% 
+  select(
+    Time, Died
+  ) %>%
+  mutate(
+    Time = parse_number(Time)
+  )
+View(deaths)
+```
 
 Similarly, deal with the returns of characters.
 
