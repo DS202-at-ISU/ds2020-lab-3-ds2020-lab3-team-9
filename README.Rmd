@@ -78,39 +78,45 @@ Each team member picks one of the statements in the FiveThirtyEight [analysis](h
 
 ```{r}
 
+# Get the total number of avengers
 numAvengers <- nrow(av)
-# numAvengers
+numAvengers
 
-# View(deaths)
-# maxdeaths <- deaths %>% 
-#   mutate(
-#     Time = parse_number(Time)
-#   ) %>% 
-#   group_by(URL, Died) %>% 
-#   summarise(
-#     total_death = max(Time)
-#   ) %>% 
-#   filter(Died != "")
-#   
-# maxdeaths %>% 
-#   ungroup() %>% 
-#   count(Died, total_death)
-# 
-# maxdeaths %>% 
-#   group_by(Died, total_death) %>% 
-#   tally()
+av %>% 
+  select(
+    Name.Alias,
+    starts_with("Death")
+  ) %>% 
+  head()
 
-# Count the number of Avengers who died at least once
-# num_died <- deaths %>%
-#   filter(!is.na(Died) & Died > 0) %>%  # Filter for deaths (non-NA and positive values)
-#   distinct(URL) %>%  # Keep only unique Avengers
-#   count()  # Count the number of unique Avengers
+countDeaths <- av %>% 
+  pivot_longer(
+    starts_with("Death"),
+    names_to = "Time",
+    values_to = "Died"
+  ) %>% 
+  select(
+    Name.Alias, Time, Died
+  ) %>%
+  mutate(
+    Time = parse_number(Time)
+  )
 
-# num_died
+numDied <- countDeaths %>%
+  filter(!is.na(Died) & Died == "YES") %>%  
+  distinct(Name.Alias) %>%  
+  count()  
+
+# Number of Avengers who died at least once
+numDied
+
+deathPercentage = numDied / numAvengers
+deathPercentage
 
 ```
 
 ### Include your answer
+The article was partially correct in their statement. There was 173 listed Avengers, but there were only 64 avengers who died at least once. Since the number of deaths was wrong, the percentage was also wrong. Instead of being 40%, it should be ~37%.
 
 ### FiveThirtyEight Statement
 
